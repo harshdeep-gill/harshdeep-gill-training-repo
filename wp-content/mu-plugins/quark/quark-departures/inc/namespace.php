@@ -7,6 +7,7 @@
 
 namespace Quark\Departures;
 
+use WP_Error;
 use WP_Post;
 use WP_Term_Query;
 
@@ -580,7 +581,14 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     duration_dates: string,
  *     starting_from_location: string,
  *     languages: string,
- *     paid_adventure_options: string[],
+ *     paid_adventure_options: array<int, array{
+ *        title: string,
+ *        icon_image_id: int,
+ *        image_id: int,
+ *        spaces_available: int,
+ *        price_per_person: string,
+ *        currency: string,
+ *     }>,
  *     lowest_price: array<string, string>,
  *     request_a_quote_url: string,
  *     departure_status: string,
@@ -723,7 +731,7 @@ function get_card_data( int $departure_id = 0, string $currency = DEFAULT_CURREN
 		'duration_dates'           => get_start_end_departure_date( $departure_id ),
 		'starting_from_location'   => get_starting_from_location( $itinerary_id ),
 		'languages'                => implode( ', ', get_languages( $departure_id ) ),
-		'paid_adventure_options'   => get_paid_adventure_options( $departure_id ),
+		'paid_adventure_options'   => get_paid_adventure_options_data( $departure_id, $currency ),
 		'lowest_price'             => $prices,
 		'transfer_package_details' => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'promotion_tags'           => get_promotion_tags( $departure_id ),
@@ -812,7 +820,14 @@ function get_start_end_departure_date( int $post_id = 0 ): string {
  *      duration_dates: string,
  *      starting_from_location: string,
  *      languages: string,
- *      paid_adventure_options: string[],
+ *      paid_adventure_options: array<int, array{
+ *         title: string,
+ *         icon_image_id: int,
+ *         image_id: int,
+ *         spaces_available: int,
+ *         price_per_person: string,
+ *         currency: string,
+ *      }>,
  *      lowest_price: array<string, string>,
  *      request_a_quote_url: string,
  *      departure_status: string,
@@ -1094,20 +1109,7 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 	}
 
 	// Prepare the paid adventure options.
-	$paid_adventure_options_data = [];
-	$paid_adventure_options      = get_adventure_option_by_departure_post_id( $departure_id );
-
-	// Loop through paid_adventure_options.
-	foreach ( $paid_adventure_options as $paid_adventure_option ) {
-		// Add paid adventure option data.
-		$paid_adventure_options_data[] = [
-			'title'            => get_term_field( 'name', $paid_adventure_option['adventure_option_term_id'] ),
-			'icon_image_id'    => get_term_meta( $paid_adventure_option['adventure_option_term_id'], 'icon', true ),
-			'spaces_available' => $paid_adventure_option['spaces_available'],
-			'price_per_person' => format_price( floatval( $paid_adventure_option[ 'price_per_person_' . strtolower( $currency ) ] ), $currency ),
-			'currency'         => strtoupper( $currency ),
-		];
-	}
+	$paid_adventure_options_data = get_paid_adventure_options_data( $departure_id, $currency );
 
 	// Available promos.
 	$available_promos = [];
@@ -1460,6 +1462,80 @@ function sort_promotions_by_type_and_value( array $promotions = [] ): array {
 
 	// Return sorted promotions.
 	return $promotions;
+}
+
+/**
+ * Get paid adventure options data.
+ *
+ * @param int    $departure_id Departure ID.
+ * @param string $currency     Currency.
+ *
+ * @return array<int, array{
+ *   title: string,
+ *   icon_image_id: int,
+ *   image_id: int,
+ *   spaces_available: int,
+ *   price_per_person: string,
+ *   currency: string,
+ * }>
+ */
+function get_paid_adventure_options_data( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
+	// Validate.
+	if ( empty( $departure_id ) ) {
+		return [];
+	}
+
+	// Get paid adventure options.
+	$paid_adventure_options = get_adventure_option_by_departure_post_id( $departure_id );
+
+	// Check for paid adventure options.
+	if ( empty( $paid_adventure_options ) ) {
+		return [];
+	}
+
+	// Initialize paid adventure options data.
+	$paid_adventure_options_data = [];
+
+	// Loop through paid adventure options.
+	foreach ( $paid_adventure_options as $paid_adventure_option ) {
+		// Adventure option id.
+		$adventure_option_id = $paid_adventure_option['adventure_option_term_id'];
+
+		// Get name.
+		$adventure_option_name = get_term_field( 'name', $adventure_option_id );
+
+		// Check for name.
+		if ( empty( $adventure_option_name ) || $adventure_option_name instanceof WP_Error ) {
+			continue;
+		}
+
+		// Add paid adventure option data.
+		$paid_adventure_options_data[] = [
+			'title'            => strval( $adventure_option_name ),
+			'icon_image_id'    => absint( get_term_meta( $paid_adventure_option['adventure_option_term_id'], 'icon', true ) ),
+			'image_id'         => absint( get_term_meta( $paid_adventure_option['adventure_option_term_id'], 'image', true ) ),
+			'spaces_available' => $paid_adventure_option['spaces_available'],
+			'price_per_person' => format_price( floatval( $paid_adventure_option[ 'price_per_person_' . strtolower( $currency ) ] ), $currency ),
+			'currency'         => $currency,
+		];
+	}
+
+	// Sort by title.
+	uasort(
+		$paid_adventure_options_data,
+		function ( $a, $b ) {
+			// Check for spaces available.
+			if ( empty( $a['title'] ) || empty( $b['title'] ) ) {
+				return 0;
+			}
+
+			// Sort by spaces available.
+			return strlen( $a['title'] ) <=> strlen( $b['title'] );
+		}
+	);
+
+	// Return paid adventure options data.
+	return $paid_adventure_options_data;
 }
 
 /**

@@ -7,9 +7,10 @@
 		@foreach ( $cards as $card)
 			@php
 				$departure_id = $card['departure_id'] ?? uniqid();
+				$adventure_options_drawer_id = quark_generate_unique_dom_id();
 			@endphp
 
-			<x-expedition-cards.card>
+			<x-expedition-cards.card aop_drawer_id="{{ $adventure_options_drawer_id }}">
 				<x-expedition-cards.card-banner
 					text="{{ __( 'Quark Protection Promise', 'qrk' ) }}"
 					url="{{ $banner_details['permalink'] ?? '' }}"
@@ -95,24 +96,23 @@
 										{{ __( 'Adventure Options', 'qrk' ) }}
 									</x-expedition-cards.specification-label>
 									<x-expedition-cards.specification-value>
-										<x-expedition-cards.adventure-options>
-											@php
-												// Sort options based on length.
-												uasort( $card['paid_adventure_options'], fn( $a, $b ) => strlen( $a ) <=> strlen( $b ) );
-											@endphp
-
-											@if( ! empty( $card['paid_adventure_options'] ) )
-												<x-expedition-cards.adventure-option title="{{ array_values( $card['paid_adventure_options'] )[0] }}"/>
-											@endif
-
-											<x-expedition-cards.adventure-options-tooltip :count="count( $card['paid_adventure_options'] ) - 1">
+										<x-drawer.drawer-open :drawer_id="$adventure_options_drawer_id">
+											<x-expedition-cards.adventure-options>
+												@if ( ! empty( $card['paid_adventure_options'] ) )
+													@for ( $i = 0; $i < 2 && $i < count( $card['paid_adventure_options'] ); ++$i )
+														<x-expedition-cards.adventure-option title="{{ $card['paid_adventure_options'][ $i ]['title'] }}" />
+													@endfor
+												@endif
+											</x-expedition-cards.adventure-options>
+											<x-expedition-cards.adventure-options-tooltip :count="count( $card['paid_adventure_options'] ) - 2" drawer_id="{{ $adventure_options_drawer_id }}">
+												<x-expedition-cards.tooltip-header>{!! __( 'Adventure Options', 'qrk' ) !!}</x-expedition-cards.tooltip-header>
 												<ul>
 													@foreach( $card['paid_adventure_options'] as $option )
-														<li>{{ $option }}</li>
+														<x-expedition-cards.adventure-option title="{{ $option['title'] }}" :icon="$option['icon_image_id']" />
 													@endforeach
 												</ul>
 											</x-expedition-cards.adventure-options-tooltip>
-										</x-expedition-cards.adventure-options>
+										</x-drawer.drawer-open>
 									</x-expedition-cards.specification-value>
 								</x-expedition-cards.specification-item>
 							@endif

@@ -41,11 +41,11 @@ export class QuarkDrawerElement extends HTMLElement {
 		// Set the attribute
 		this.setAttribute( 'open', 'yes' );
 
-		// Dispatch open event.
-		this.dispatchEvent( new CustomEvent( 'open' ) );
-
 		// Removes scroll from body.
 		document.querySelector( 'body' )?.classList?.add( 'prevent-scroll' );
+
+		// Dispatch open event.
+		this.dispatchEvent( new CustomEvent( 'open' ) );
 
 		// Add animation.
 		this?.classList.add( 'drawer--open' );
