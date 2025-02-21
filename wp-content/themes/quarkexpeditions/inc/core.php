@@ -252,10 +252,12 @@ function kses_custom_allowed_html( array $tags = [], string $context = 'post' ):
 					'url'   => true,
 				],
 				'quark-departure-card'                                     => [
-					'class' => true,
+					'class'         => true,
+					'aop-drawer-id' => true,
 				],
 				'quark-expedition-card'                                    => [
-					'class' => true,
+					'class'         => true,
+					'aop-drawer-id' => true,
 				],
 				'quark-toast-message'                                      => [
 					'class'   => true,
