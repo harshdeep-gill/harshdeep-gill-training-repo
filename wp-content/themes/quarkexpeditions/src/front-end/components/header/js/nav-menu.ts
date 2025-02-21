@@ -104,6 +104,7 @@ export default class HeaderNavMenu extends HTMLElement {
 		// Get all dropdowns.
 		const dropdowns = document.querySelectorAll( 'quark-header-nav-menu-dropdown' );
 		dropdowns.forEach( ( dropdown ) => dropdown.removeAttribute( 'open' ) );
+		document.body.classList.remove( 'has-navigation-dropdown-open' );
 	}
 }
 

@@ -23,7 +23,12 @@ use function Quark\Softrip\Occupancies\get_occupancies_by_cabin_category_and_dep
 use function Quark\Softrip\Occupancies\get_occupancy_data_by_id;
 use function Quark\Softrip\Occupancies\is_occupancy_on_sale;
 use function Quark\Softrip\OccupancyPromotions\get_lowest_price as get_occupancy_promotion_lowest_price;
+use function Quark\Softrip\OccupancyPromotions\get_occupancy_promotions_by_occupancy;
 use function Quark\Softrip\Promotions\get_promotions_by_code;
+use function Quark\Softrip\Promotions\get_promotions_by_id;
+
+use function Travelopia\Multilingual\get_translated_image;
+use function Travelopia\Multilingual\get_post_translations;
 
 use const Quark\Localization\DEFAULT_CURRENCY;
 use const Quark\Ships\POST_TYPE as SHIP_POST_TYPE;
@@ -52,6 +57,9 @@ function bootstrap(): void {
 
 	// Other hooks. Assigning non-standard priority to avoid race conditions with ACF.
 	add_action( 'save_post', __NAMESPACE__ . '\\bust_post_cache', 11 );
+
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
 
 	// Admin stuff.
 	if ( is_admin() || ( defined( 'WP_CLI' ) && true === WP_CLI ) ) {
@@ -443,7 +451,8 @@ function get_cabin_categories_data( int $cabin_id = 0 ): array {
  *         discounted_price: string,
  *         original_price: string,
  *     },
- *     occupancies: array<int<0, max>, array<string, mixed>>
+ *     occupancies: array<int<0, max>, array<string, mixed>>,
+ *     promo_codes: array<string>
  * }>
  */
 function get_cabin_details_by_departure( int $departure_post_id = 0, string $currency = DEFAULT_CURRENCY ): array {
@@ -522,6 +531,7 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 			],
 			'from_price'     => $formatted_price,
 			'occupancies'    => [],
+			'promo_codes'    => [],
 		];
 
 		// Get all occupancies for this cabin and departure.
@@ -549,6 +559,47 @@ function get_cabin_details_by_departure( int $departure_post_id = 0, string $cur
 
 			// Add occupancy detail to occupancies.
 			$struct['occupancies'][] = $occupancy_detail;
+		}
+
+		// Get promotions.
+		if ( ! empty( $occupancies ) ) {
+			// First occupancy.
+			$occupancy = $occupancies[0];
+
+			// Bail if not valid.
+			if ( empty( $occupancy['id'] ) ) {
+				continue;
+			}
+
+			// Get occupancy promotions.
+			$occupancy_promotions = get_occupancy_promotions_by_occupancy( $occupancy['id'] );
+
+			// Loop through the occupancy promotions.
+			foreach ( $occupancy_promotions as $occupancy_promotion ) {
+				// Validate promo id.
+				if ( empty( $occupancy_promotion['promotion_id'] ) ) {
+					continue;
+				}
+
+				// Get promotion detail.
+				$promotion_detail = get_promotions_by_id( $occupancy_promotion['promotion_id'] );
+
+				// Validate promotion detail.
+				if ( empty( $promotion_detail ) ) {
+					continue;
+				}
+
+				// Pick the first item.
+				$promotion_detail = $promotion_detail[0];
+
+				// Check for currency.
+				if ( ! empty( $promotion_detail['currency'] ) && $currency !== $promotion_detail['currency'] ) {
+					continue;
+				}
+
+				// Add promotion detail to cabin structure.
+				$struct['promo_codes'][] = $promotion_detail['code'];
+			}
 		}
 
 		// Add cabin category data to cabin categories data.
@@ -627,7 +678,7 @@ function get_cabin_price_data_by_departure( int $departure_id = 0, string $curre
 			$promo_data = $promo_data[0];
 
 			// Check for currency & discount value - exclude free promotions.
-			if ( empty( $promo_data['discount_value'] ) || ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) ) {
+			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
 				continue;
 			}
 
@@ -682,17 +733,31 @@ function get_cabin_price_data_by_departure( int $departure_id = 0, string $curre
 			'checkout_url'             => get_checkout_url( $departure_id, $cabin_id, $currency ),
 			'type'                     => $cabin_class_data['name'] ?? '',
 			'sort_priority'            => $cabin_class_data['sort_priority'] ?? 0,
+			'brochure_price'           => '',
 		];
 
 		// Get the lowest price for the cabin.
 		$cabin_price = get_lowest_price_by_cabin_category_and_departure( $cabin_id, $departure_id, $currency );
+
+		// Skip if no cabin price.
+		if ( empty( $cabin_price['original'] ) ) {
+			continue;
+		}
 
 		// Set the brochure price.
 		$cabin_price_data[ $cabin_code ]['brochure_price'] = format_price( $cabin_price['original'], $currency );
 
 		// Loop through available_promos for each promo.
 		foreach ( $available_promos as $promo_code => $promo_data ) {
-			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency ), $currency );
+			$discounted_lowest_price = get_lowest_price_by_cabin_category_and_departure_and_promotion_code( $cabin_id, $departure_id, $promo_code, $currency );
+
+			// Skip if no discounted lowest price.
+			if ( empty( $discounted_lowest_price ) ) {
+				continue;
+			}
+
+			// Add promo to cabin data.
+			$cabin_price_data[ $cabin_code ]['promos'][ $promo_code ] = format_price( $discounted_lowest_price, $currency );
 		}
 	}
 
@@ -930,7 +995,6 @@ function get_size_range( int $cabin_category_post_id = 0 ): string {
  *     original_price: string,
  *     discounted_price: string,
  *   },
- *   promotions: mixed[],
  *   checkout_url: string,
  * }
  */
@@ -995,7 +1059,6 @@ function get_occupancy_detail( int $occupancy_id = 0, int $departure_post_id = 0
 			'original_price'   => format_price( $price_with_supplement_mandatory['original'], $currency ),
 			'discounted_price' => format_price( $price_with_supplement_mandatory['discounted'], $currency ),
 		],
-		'promotions'   => [],
 		'checkout_url' => get_checkout_url( $departure_post_id, $occupancy['cabin_category_post_id'], $currency, $mask ),
 	];
 
@@ -1131,4 +1194,74 @@ function get_availability_status_description( string $status = '' ): string {
 		default:
 			return '';
 	}
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'cabin_name'              => 'string',
+		'cabin_bed_configuration' => 'string',
+		'related_ship'            => 'post',
+		'cabin_images'            => __NAMESPACE__ . '\\translate_meta_key',
+		'related_decks'           => __NAMESPACE__ . '\\translate_meta_key',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Callable to translate a meta value by meta key.
+ *
+ * @param string $meta_key            Meta key name.
+ * @param string $meta_value          Meta key value.
+ * @param int    $source_site_id      Source site ID.
+ * @param int    $destination_site_id Destination site ID.
+ *
+ * @return string Translated value.
+ */
+function translate_meta_key( string $meta_key = '', string $meta_value = '', int $source_site_id = 0, int $destination_site_id = 0 ): string {
+	// Bail if required data is not available.
+	if ( empty( $meta_key ) || empty( $meta_value ) || empty( $source_site_id ) || empty( $destination_site_id ) ) {
+		return $meta_value;
+	}
+
+	// Translate the `cabin_images` meta key.
+	if ( 'cabin_images' === $meta_key ) {
+		$post = get_translated_image(
+			absint( $meta_value ),
+			$source_site_id,
+			$destination_site_id
+		);
+
+		// Check if post is an instance of WP_Post.
+		if ( $post instanceof WP_Post ) {
+			// Update meta value.
+			$meta_value = strval( $post->ID );
+		}
+	} elseif ( 'related_decks' === $meta_key ) {
+		// Get translated deck ID.
+		$deck_post = get_post_translations(
+			absint( $meta_value ),
+			$source_site_id
+		);
+
+		// Loop through translated posts.
+		foreach ( $deck_post as $post ) {
+			if ( $post['site_id'] === $destination_site_id ) {
+				// Update meta value.
+				$meta_value = $post['post_id'];
+			}
+		}
+	}
+
+	// Return meta value.
+	return strval( $meta_value );
 }

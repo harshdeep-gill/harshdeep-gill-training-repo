@@ -38,34 +38,34 @@
 					@case( 'sub-region' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
-								label="{{ $field['label'] ?: 'Where would you like to travel?' }}"
+								label="{{ $field['label'] ?: __( 'Where would you like to travel?', 'qrk' ) }}"
 								name="fields[Sub_Region__c]"
 								form="{{ $form_id }}"
 							>
 								@if ( empty( $field['options'] ) )
 									<x-form.option
 										value="Antarctic Peninsula"
-										label="Antarctic Peninsula"
+										:label="__( 'Antarctic Peninsula', 'qrk' )"
 									>
-										Antarctic Peninsula
+										{!! __( 'Antarctic Peninsula', 'qrk' ) !!}
 									</x-form.option>
 									<x-form.option
 										value="Falklands & South Georgia"
-										label="Falklands & South Georgia"
+										:label="__( 'Falklands & South Georgia', 'qrk' )"
 									>
-										Falklands & South Georgia
+										{!! __( 'Falklands & South Georgia', 'qrk' ) !!}
 									</x-form.option>
 									<x-form.option
 										value="Patagonia"
-										label="Patagonia"
+										:label="__( 'Patagonia', 'qrk' )"
 									>
-										Patagonia
+										{!! __( 'Patagonia', 'qrk' ) !!}
 									</x-form.option>
 									<x-form.option
 										value="Snow Hill Island"
-										label="Snow Hill Island"
+										:label="__( 'Snow Hill Island', 'qrk' )"
 									>
-										Snow Hill Island
+										{!! __( 'Snow Hill Island', 'qrk' ) !!}
 									</x-form.option>
 								@else
 									@foreach ( $field['options'] as $option )
@@ -85,21 +85,21 @@
 					@case( 'most-important-factors' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
-								label="{{ $field['label'] ?: 'The most important factor for you?' }}"
+								label="{{ $field['label'] ?: __( 'The most important factor for you?', 'qrk' ) }}"
 								name="fields[Most_Important_Factors__c]"
 								form="{{ $form_id }}"
 							>
 								@if ( empty( $field['options'] ) )
 									<x-form.option
 										value="Adventure Activities"
-										label="Adventure Activities"
+										:label="__( 'Adventure Activities', 'qrk' )"
 									>
-										Adventure Activities
+										{!! __( 'Adventure Activities', 'qrk' ) !!}
 									</x-form.option>
-									<x-form.option value="Budget" label="Budget">Budget</x-form.option>
-									<x-form.option value="Region" label="Destination">Destination</x-form.option>
-									<x-form.option value="Schedule" label="Schedule">Schedule</x-form.option>
-									<x-form.option value="Wildlife" label="Wildlife">Wildlife</x-form.option>
+									<x-form.option value="Budget" :label="__( 'Budget', 'qrk' )">{!! __( 'Budget', 'qrk' ) !!}</x-form.option>
+									<x-form.option value="Region" :label="__( 'Destination', 'qrk' )">{!! __( 'Destination', 'qrk' ) !!}</x-form.option>
+									<x-form.option value="Schedule" :label="__( 'Schedule', 'qrk' )">{!! __( 'Schedule', 'qrk' ) !!}</x-form.option>
+									<x-form.option value="Wildlife" :label="__( 'Wildlife', 'qrk' )">{!! __( 'Wildlife', 'qrk' ) !!}</x-form.option>
 								@else
 									@foreach ( $field['options'] as $option )
 										<x-form.option
@@ -118,7 +118,7 @@
 					@case( 'pax-count' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
-								label="{{ $field['label'] ?: 'How many guests?' }}"
+								label="{{ $field['label'] ?: __( 'How many guests?', 'qrk' ) }}"
 								name="fields[Pax_Count__c]"
 								form="{{ $form_id }}"
 							>
@@ -145,22 +145,22 @@
 					@case( 'season' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
-								label="{{ $field['label'] ?: 'When would you like to go?' }}"
+								label="{{ $field['label'] ?: __( 'When would you like to go?', 'qrk' ) }}"
 								name="fields[Season__c]"
 								form="{{ $form_id }}"
 							>
 								@if ( empty( $field['options'] ) )
 									<x-form.option
 										value="2024-25"
-										label="Antarctic 2024/25 (Nov '24 - Mar '25)"
+										:label="__( 'Antarctic 2024/25 (Nov \'24 - Mar \'25)', 'qrk' )"
 									>
-										Antarctic 2024/25 (Nov '24 - Mar '25)
+										{!! __( 'Antarctic 2024/25 (Nov \'24 - Mar \'25)', 'qrk' ) !!}
 									</x-form.option>
 									<x-form.option
 										value="2025-26"
-										label="Antarctic 2025/26 (Nov '25 - Mar '26)"
+										:label="__( 'Antarctic 2025/26 (Nov \'25 - Mar \'26)', 'qrk' )"
 									>
-										Antarctic 2025/26 (Nov '25 - Mar '26)
+										{!! __( 'Antarctic 2025/26 (Nov \'25 - Mar \'26)', 'qrk' ) !!}
 									</x-form.option>
 								@else
 									@foreach ( $field['options'] as $option )
@@ -180,7 +180,7 @@
 					@case( 'expedition-name' )
 						<x-form.field :validation="[ ! empty( $field['is_required'] ) ? 'required' : '' ]">
 							<x-form.select
-								label="{{ $field['label'] ?: 'Which voyage are you intersted in?' }}"
+								label="{{ $field['label'] ?: __( 'Which voyage are you intersted in?', 'qrk' ) }}"
 								name="fields[Expedition__c]"
 								form="{{ $form_id }}"
 							>
@@ -211,7 +211,7 @@
 			>
 				<x-button type="button">
 					{{ __( 'Request a Quote', 'qrk' ) }}
-					<x-button.sub-title title="It only takes 2 minutes" />
+					<x-button.sub-title :title="__( 'It only takes 2 minutes', 'qrk' )" />
 				</x-button>
 			</x-form-two-step.modal-cta>
 		</x-form.buttons>

@@ -26,6 +26,9 @@ function bootstrap(): void {
 			'skip_inner_blocks' => true,
 		]
 	);
+
+	// Add block attributes to translate.
+	add_filter( 'qrk_translation_block_attributes', __NAMESPACE__ . '\\block_attributes_to_translate' );
 }
 
 /**
@@ -211,4 +214,41 @@ function render( array $attributes = [], string $content = '', WP_Block $block =
 			'slot'              => $cards,
 		],
 	);
+}
+
+/**
+ * Block attributes that need to be translatable.
+ *
+ * @param mixed[] $blocks_and_attributes Blocks and attributes.
+ *
+ * @return mixed[]
+ */
+function block_attributes_to_translate( array $blocks_and_attributes = [] ): array {
+	// Add data to translate.
+	$blocks_and_attributes['quark/info-card'] = [
+		'image' => [ 'image' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes['quark/info-card-cta'] = [
+		'text' => [ 'text' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes['quark/info-card-overline'] = [
+		'text' => [ 'overline' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes['quark/info-card-tag'] = [
+		'text' => [ 'text' ],
+	];
+
+	// Add data to translate.
+	$blocks_and_attributes['quark/info-card-title'] = [
+		'text' => [ 'title' ],
+	];
+
+	// Return updated data.
+	return $blocks_and_attributes;
 }

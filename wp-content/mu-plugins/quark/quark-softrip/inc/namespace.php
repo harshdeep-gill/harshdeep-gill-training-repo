@@ -19,6 +19,7 @@ use function Quark\Softrip\Promotions\get_table_sql as get_promotions_table_sql;
 use function Quark\Softrip\OccupancyPromotions\get_table_sql as get_occupancy_promotions_table_sql;
 use function Quark\Softrip\AdventureOptions\get_table_name as get_adventure_options_table_name;
 use function Quark\Softrip\Cleanup\do_cleanup;
+use function Quark\Softrip\Departures\get_start_date;
 use function Quark\Softrip\Occupancies\get_table_name as get_occupancies_table_name;
 use function Quark\Softrip\OccupancyPromotions\get_table_name as get_occupancy_promotions_table_name;
 use function Quark\Softrip\Promotions\get_table_name as get_promotions_table_name;
@@ -289,7 +290,7 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 				$progress->tick( count( $softrip_codes ) );
 			}
 
-			// If WP_Error.
+			// API Error.
 			if ( $raw_departures instanceof WP_Error ) {
 				// Log the error.
 				do_action(
@@ -300,12 +301,22 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 						'codes' => $softrip_codes,
 					]
 				);
+			} elseif ( ! is_array( $raw_departures ) ) {
+				// Log the error.
+				do_action(
+					'quark_softrip_sync_error',
+					[
+						'error' => 'Invalid data returned from API',
+						'via'   => $initiated_via,
+						'codes' => $softrip_codes,
+					]
+				);
 			} else {
 				// Log the error.
 				do_action(
 					'quark_softrip_sync_error',
 					[
-						'error' => 'No departure or invalid data returned',
+						'error' => 'Invalid response from Softrip',
 						'via'   => $initiated_via,
 						'codes' => $softrip_codes,
 					]
@@ -319,21 +330,37 @@ function do_sync( array $itinerary_post_ids = [], array $specific_departure_post
 		// Process each departure.
 		foreach ( $raw_departures as $softrip_package_code => $departures ) {
 			// Validate is array and not empty.
-			if ( ! is_string( $softrip_package_code ) || ! is_array( $departures ) || empty( $departures ) || empty( $departures['departures'] ) ) {
+			if ( ! is_string( $softrip_package_code ) || ! is_array( $departures ) || empty( $departures['departures'] ) ) {
 				// Update progress bar.
 				if ( $is_in_cli ) {
 					$progress->tick();
 				}
 
-				// Log the error.
-				do_action(
-					'quark_softrip_sync_error',
-					[
-						'error' => 'No departure or invalid data found',
-						'via'   => $initiated_via,
-						'codes' => [ $softrip_package_code ],
-					]
-				);
+				// Log error.
+				if ( ! is_string( $softrip_package_code ) ) {
+					// Log the error.
+					do_action(
+						'quark_softrip_sync_error',
+						[
+							'error' => 'Invalid Softrip package code',
+							'via'   => $initiated_via,
+							'codes' => [ $softrip_package_code ],
+						]
+					);
+				} elseif ( ! is_array( $departures ) ) {
+					// Log the error.
+					do_action(
+						'quark_softrip_sync_error',
+						[
+							'error' => 'Invalid departures data',
+							'via'   => $initiated_via,
+							'codes' => [ $softrip_package_code ],
+						]
+					);
+				} else {
+					// Draft departures.
+					draft_old_departures( [ $softrip_package_code ] );
+				}
 
 				// Skip since there was an error, or departures are empty.
 				continue;
@@ -529,4 +556,120 @@ function delete_custom_data( int $post_id = 0 ): void {
 
 	// Remove departure data.
 	do_cleanup( [ $post_id ], false );
+}
+
+/**
+ * Draft departures.
+ *
+ * @param string[] $package_codes Package Codes.
+ *
+ * @return void
+ */
+function draft_old_departures( array $package_codes = [] ): void {
+	// Bail if empty.
+	if ( empty( $package_codes ) ) {
+		return;
+	}
+
+	// Get departure post IDs.
+	$departure_posts = new WP_Query(
+		[
+			'post_type'              => DEPARTURE_POST_TYPE,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_term_meta_cache' => false,
+			'ignore_sticky_posts'    => true,
+			'post_status'            => [ 'publish' ],
+			'posts_per_page'         => -1,
+			'meta_query'             => [
+				[
+					'key'     => 'softrip_package_code',
+					'value'   => $package_codes,
+					'compare' => 'IN',
+				],
+			],
+		]
+	);
+
+	// Get departure post IDs.
+	$departure_post_ids = $departure_posts->posts;
+
+	// Filter integer post IDs.
+	$departure_post_ids = array_map( 'absint', $departure_post_ids );
+
+	// Get initiated via.
+	$initiated_via = get_initiated_via();
+
+	// Bail if empty.
+	if ( empty( $departure_post_ids ) ) {
+		// Log the error.
+		do_action(
+			'quark_softrip_sync_error',
+			[
+				'error' => 'No published departure posts found for the package codes',
+				'via'   => $initiated_via,
+				'codes' => $package_codes,
+			]
+		);
+
+		// Bail out.
+		return;
+	}
+
+	// Loop through departure posts.
+	foreach ( $departure_post_ids as $departure_post_id ) {
+		// Get softrip package ID.
+		$softrip_package_id = strval( get_post_meta( $departure_post_id, 'softrip_id', true ) );
+
+		// Validate Softrip package ID.
+		if ( empty( $softrip_package_id ) ) {
+			// Continue.
+			continue;
+		}
+
+		// Get start date meta.
+		$start_date = get_start_date( $departure_post_id );
+
+		// If empty start date or not in the past, skip.
+		if ( empty( $start_date ) || ! is_date_in_the_past( $start_date ) ) {
+			continue;
+		}
+
+		// Draft departure.
+		$is_updated = wp_update_post(
+			[
+				'ID'          => $departure_post_id,
+				'post_status' => 'draft',
+			]
+		);
+
+		// Bail if not updated.
+		if ( empty( $is_updated ) || $is_updated instanceof WP_Error ) {
+			// Log error.
+			do_action(
+				'quark_softrip_sync_error',
+				[
+					'error' => 'Failed to draft departure post ID ' . $departure_post_id . ' for Softrip ID ' . $softrip_package_id . ' as it could not be updated',
+					'via'   => $initiated_via,
+				]
+			);
+
+			// Skip.
+			continue;
+		}
+
+		/**
+		 * Fires after a departure is expired and unpublished.
+		 *
+		 * @param int $departure_post_id Departure post ID.
+		 */
+		do_action(
+			'quark_softrip_sync_departure_expired',
+			[
+				'post_id'    => $departure_post_id,
+				'softrip_id' => $softrip_package_id,
+			]
+		);
+	}
 }

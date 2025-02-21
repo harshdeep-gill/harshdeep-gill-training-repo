@@ -26,6 +26,38 @@
 		}
 	}
 
+	&--404 {
+		margin-bottom: 0;
+		min-height: calc(100svh - var(--header-height));
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		#{$self}__content {
+			align-items: center;
+		}
+
+		.buttons {
+			flex-direction: column;
+			max-width: 350px;
+			align-items: stretch;
+			width: 100%;
+
+			@media screen and (min-width: grid-size(lg)) {
+				flex-direction: row;
+				align-items: initial;
+			}
+
+			.btn:hover {
+				background-color: var(--color-white);
+			}
+		}
+
+		+ .wp-block-template-part .footer {
+			margin-top: 0;
+		}
+	}
+
 	&__text-graphic {
 		max-width: 230px;
 		height: 170px;

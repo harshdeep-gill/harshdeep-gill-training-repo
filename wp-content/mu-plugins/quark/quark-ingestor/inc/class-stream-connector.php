@@ -43,7 +43,7 @@ class Stream_Connector extends Connector {
 	 */
 	public function get_label(): string {
 		// Return label.
-		return __( 'Ingestor', 'qrk' );
+		return 'Ingestor';
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Stream_Connector extends Connector {
 	public function get_context_labels(): array {
 		// Return labels.
 		return [
-			'ingestor_push' => __( 'Ingestor Push', 'qrk' ),
+			'ingestor_push' => 'Ingestor Push',
 		];
 	}
 
@@ -66,11 +66,11 @@ class Stream_Connector extends Connector {
 	public function get_action_labels(): array {
 		// Return labels.
 		return [
-			'push_initiated'        => __( 'Push Initiated', 'qrk' ),
-			'push_completed'        => __( 'Push Completed', 'qrk' ),
-			'push_error'            => __( 'Push Error', 'qrk' ),
-			'push_success'          => __( 'Push Success', 'qrk' ),
-			'dispatch_github_event' => __( 'Dispatch GitHub Event', 'qrk' ),
+			'push_initiated'        => 'Push Initiated',
+			'push_completed'        => 'Push Completed',
+			'push_error'            => 'Push Error',
+			'push_success'          => 'Push Success',
+			'dispatch_github_event' => 'Dispatch GitHub Event',
 		];
 	}
 
@@ -101,11 +101,10 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			/* translators: 1: Total count, 2: Initiated via, 3: Changed only */
-			__( 'Push initiated for %1$d expedition(s) via %2$s | Changed only: %3$s.', 'qrk' ),
+			'Push initiated for %1$d expedition(s) via %2$s | Changed only: %3$s.',
 			$total_count,
 			$initiated_via,
-			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
+			$changed_only ? 'Yes' : 'No'
 		);
 
 		// Log message.
@@ -153,12 +152,11 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			/* translators: 1: Total count, 2: Initiated via, 3: Success count, 4: Changed only */
-			__( 'Push completed for %1$d expedition(s) via %2$s | Successful: %3$d | Changed only: %4$s.', 'qrk' ),
+			'Push completed for %1$d expedition(s) via %2$s | Successful: %3$d | Changed only: %4$s.',
 			$total_count,
 			$initiated_via,
 			$success_count,
-			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' )
+			$changed_only ? 'Yes' : 'No'
 		);
 
 		// Log message.
@@ -205,15 +203,13 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		if ( empty( $expedition_post_id ) ) {
 			$message = sprintf(
-				/* translators: 1: Initiated via, 2: Error message */
-				__( 'Push failed via %1$s | %2$s', 'qrk' ),
+				'Push failed via %1$s | %2$s',
 				$initiated_via,
 				$error
 			);
 		} else {
 			$message = sprintf(
-				/* translators: 1: Expedition post title, 2: Initiated via, 3: Error message */
-				__( 'Push failed for "%1$s" via %2$s | %3$s', 'qrk' ),
+				'Push failed for "%1$s" via %2$s | %3$s',
 				get_the_title( $expedition_post_id ),
 				$initiated_via,
 				$error
@@ -258,11 +254,10 @@ class Stream_Connector extends Connector {
 
 		// Prepare message.
 		$message = sprintf(
-			/* translators: 1: Expedition post title, 2: Initiated via, 3: Changed only */
-			__( 'Push successful for "%1$s" via %2$s | Changed only: %3$s | Hash: %4$s', 'qrk' ),
+			'Push successful for "%1$s" via %2$s | Changed only: %3$s | Hash: %4$s',
 			get_the_title( $expedition_post_id ),
 			$initiated_via,
-			$changed_only ? __( 'Yes', 'qrk' ) : __( 'No', 'qrk' ),
+			$changed_only ? 'Yes' : 'No',
 			$data['hash']
 		);
 
@@ -321,15 +316,13 @@ class Stream_Connector extends Connector {
 		// Prepare message.
 		if ( ! empty( $error_message ) ) {
 			$message = sprintf(
-				/* translators: 1: Error message */
-				__( 'Dispatch GitHub event for urgent push failed | %1$s | Expedition ids: %2$s', 'qrk' ),
+				'Dispatch GitHub event for urgent push failed | %1$s | Expedition ids: %2$s',
 				$error_message,
 				implode( ',', $expedition_ids )
 			);
 		} else {
 			$message = sprintf(
-				/* translators: 1: Success message */
-				__( 'Dispatch GitHub event for urgent push successful | %1$s | Expedition ids: %2$s', 'qrk' ),
+				'Dispatch GitHub event for urgent push successful | %1$s | Expedition ids: %2$s',
 				$success_message,
 				implode( ',', $expedition_ids )
 			);
@@ -395,7 +388,7 @@ class Stream_Connector extends Connector {
 		}
 
 		// Add edit link.
-		$links[ __( 'Edit', 'qrk' ) ] = $edit_url;
+		$links['Edit'] = $edit_url;
 
 		// Return links.
 		return $links;

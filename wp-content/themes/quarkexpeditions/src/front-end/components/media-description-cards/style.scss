@@ -77,6 +77,10 @@
 		flex: 0 0 100%;
 		padding: var(--spacing-5);
 		display: flex;
+
+		.color-context--dark & {
+			background-color: var(--color-gray-90);
+		}
 	}
 
 	&__card {
@@ -137,9 +141,17 @@
 		justify-content: center;
 		cursor: pointer;
 
+		.color-context--dark & {
+			background-color: var(--color-white);
+		}
+
 		svg {
 			width: 7px;
 			height: 11px;
+
+			path {
+				fill: var(--color-black);
+			}
 		}
 
 		&--right {

@@ -34,6 +34,9 @@ use function Quark\Itineraries\get_tax_type_details;
 use function Quark\Leads\get_request_a_quote_url;
 use function Quark\Localization\get_currencies;
 
+use function Travelopia\Multilingual\get_post_translations;
+use function Travelopia\Multilingual\get_term_translations;
+
 use const Quark\AdventureOptions\ADVENTURE_OPTION_CATEGORY;
 use const Quark\CabinCategories\AVAILABLE_STATUS;
 use const Quark\CabinCategories\SOLD_OUT_STATUS;
@@ -71,6 +74,9 @@ function bootstrap(): void {
 	add_action( 'qe_departure_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache' );
 	add_action( 'qe_expedition_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_expedition_update' );
 	add_action( 'qe_itinerary_post_cache_busted', __NAMESPACE__ . '\\bust_card_data_cache_on_itinerary_update' );
+
+	// Add meta keys to be translated while content sync.
+	add_filter( 'qrk_translation_meta_keys', __NAMESPACE__ . '\\translate_meta_keys' );
 
 	// Admin stuff.
 	if ( is_admin() ) {
@@ -120,6 +126,9 @@ function register_departure_post_type(): void {
 		'can_export'          => true,
 		'rewrite'             => false,
 		'capability_type'     => 'post',
+		'capabilities'        => [
+			'create_posts' => 'do_not_allow',
+		],
 	];
 
 	// Register post type.
@@ -592,6 +601,7 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *     promotion_tags: string[],
  *     ship_name: string,
  *     promotion_banner: string,
+ *     promotions: array<string, string>,
  *     banner_details: array{
  *        title: string,
  *        description: string,
@@ -618,7 +628,8 @@ function get_promotion_tags( int $post_id = 0 ): array {
  *          discounted_price: string,
  *          original_price: string,
  *      },
- *      occupancies: array<int<0, max>, array<string, mixed>>
+ *      occupancies: array<int<0, max>, array<string, mixed>>,
+ *      promo_codes: string[],
  *     }>,
  * }
  */
@@ -1103,9 +1114,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 	// Available promos.
 	$available_promos = [];
 
-	// Free promos.
-	$free_promos = [];
-
 	// Get Available Promos for the Departure.
 	if ( ! empty( $departure['post_meta']['promotion_codes'] ) ) {
 		$promotion_codes = $departure['post_meta']['promotion_codes'];
@@ -1124,14 +1132,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 
 			// Check for currency.
 			if ( ! empty( $promo_data['currency'] ) && $currency !== $promo_data['currency'] ) {
-				continue;
-			}
-
-			// Bail if discount value is 0.
-			if ( empty( $promo_data['discount_value'] ) ) {
-				$free_promos[ strval( $promo_code ) ] = $promo_data;
-
-				// Skip to next promo.
 				continue;
 			}
 
@@ -1160,7 +1160,6 @@ function get_dates_rates_card_data( int $departure_id = 0, string $currency = DE
 		'paid_adventure_options'     => $paid_adventure_options_data,
 		'transfer_package_details'   => get_included_transfer_package_details( $itinerary_id, $currency ),
 		'available_promos'           => $available_promos,
-		'free_promos'                => $free_promos,
 		'cabin_data'                 => get_cabin_price_data_by_departure( $departure_id, $currency ),
 		'request_a_quote_url'        => get_request_a_quote_url( $departure_id ),
 		'tax_types'                  => get_tax_type_details( $itinerary_id ),
@@ -1301,7 +1300,7 @@ function get_discount_label( int $original_price = 0, int $discounted_price = 0 
  * @param int    $departure_id Departure ID.
  * @param string $currency     Currency.
  *
- * @return string[]
+ * @return array<string, string>
  */
 function get_promotions_description( int $departure_id = 0, string $currency = DEFAULT_CURRENCY ): array {
 	// Check for departure ID.
@@ -1330,8 +1329,11 @@ function get_promotions_description( int $departure_id = 0, string $currency = D
 
 	// Loop through available_promos.
 	foreach ( $available_promos as $promo_code ) {
+		// Promo code.
+		$promo_code = strval( $promo_code );
+
 		// Get promo data.
-		$promo_data = get_promotions_by_code( strval( $promo_code ) );
+		$promo_data = get_promotions_by_code( $promo_code );
 
 		// Check for promo data.
 		if ( empty( $promo_data ) ) {
@@ -1358,7 +1360,7 @@ function get_promotions_description( int $departure_id = 0, string $currency = D
 		);
 
 		// Add promo description to array.
-		$promo_descriptions[] = $promo_description;
+		$promo_descriptions[ $promo_code ] = $promo_description;
 	}
 
 	// Return promo descriptions.
@@ -1369,7 +1371,7 @@ function get_promotions_description( int $departure_id = 0, string $currency = D
  * Get Departure Availability Status.
  *
  * @param int          $departure_id Departure ID.
- * @param mixed[]|null $cabins Cabin details.
+ * @param mixed[]|null $cabins       Cabin details.
  *
  * @return string
  */
@@ -1534,4 +1536,89 @@ function get_paid_adventure_options_data( int $departure_id = 0, string $currenc
 
 	// Return paid adventure options data.
 	return $paid_adventure_options_data;
+}
+
+/**
+ * Translate meta keys.
+ *
+ * @param array<string, string> $meta_keys Meta keys.
+ *
+ * @return array<string, string|string[]>
+ */
+function translate_meta_keys( array $meta_keys = [] ): array {
+	// Meta keys for translation.
+	$extra_keys = [
+		'related_expedition'                       => 'post',
+		'related_ship'                             => 'post',
+		'itinerary'                                => 'post',
+		'expedition_team_\d+_staff_member'         => 'post',
+		'related_departures'                       => __NAMESPACE__ . '\\translate_meta_key',
+		'adventure_options'                        => __NAMESPACE__ . '\\translate_meta_key',
+		'related_promotion_tags'                   => __NAMESPACE__ . '\\translate_meta_key',
+		'expedition_team_\d+_departure_staff_role' => __NAMESPACE__ . '\\translate_meta_key',
+	];
+
+	// Return meta keys to be translated.
+	return array_merge( $meta_keys, $extra_keys );
+}
+
+/**
+ * Callable to translate a meta value by meta key.
+ *
+ * @param string $meta_key            Meta key name.
+ * @param string $meta_value          Meta key value.
+ * @param int    $source_site_id      Source site ID.
+ * @param int    $destination_site_id Destination site ID.
+ *
+ * @return string Translated value.
+ */
+function translate_meta_key( string $meta_key = '', string $meta_value = '', int $source_site_id = 0, int $destination_site_id = 0 ): string {
+	// Bail if required data is not available.
+	if ( empty( $meta_key ) || empty( $meta_value ) || empty( $source_site_id ) || empty( $destination_site_id ) ) {
+		return $meta_value;
+	}
+
+	// Taxonomies keys.
+	$taxonomies_keys = [
+		'adventure_options',
+		'related_promotion_tags',
+	];
+
+	// Translate the taxonomies meta key.
+	if (
+		in_array( $meta_key, $taxonomies_keys, true )
+		|| preg_match( '/expedition_team_\d+_departure_staff_role/', $meta_key )
+	) {
+		// Get translated term id.
+		$translated_terms = get_term_translations(
+			absint( $meta_value ),
+			$source_site_id,
+		);
+
+		// Loop through translated terms.
+		foreach ( $translated_terms as $term ) {
+			if ( $term['site_id'] === $destination_site_id ) {
+				// Update meta value with translated term id.
+				$meta_value = $term['term_id'];
+				break;
+			}
+		}
+	} elseif ( 'related_departures' === $meta_key ) {
+		// Get translated deck ID.
+		$deck_post = get_post_translations(
+			absint( $meta_value ),
+			$source_site_id
+		);
+
+		// Loop through translated posts.
+		foreach ( $deck_post as $post ) {
+			if ( $post['site_id'] === $destination_site_id ) {
+				// Update meta value.
+				$meta_value = $post['post_id'];
+			}
+		}
+	}
+
+	// Return meta value.
+	return strval( $meta_value );
 }

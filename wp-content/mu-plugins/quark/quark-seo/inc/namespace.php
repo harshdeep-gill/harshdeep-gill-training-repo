@@ -143,6 +143,8 @@ function get_structured_data(): array {
 	];
 	$social_links = array_values( array_filter( $social_links ) );
 
+	// TODO:: Verify the hardcoded details for the organization.
+	// TODO:: - For multisite site we need to get the details from the site options.
 	// Return schema.
 	return [
 		'@context' => 'https://schema.org',

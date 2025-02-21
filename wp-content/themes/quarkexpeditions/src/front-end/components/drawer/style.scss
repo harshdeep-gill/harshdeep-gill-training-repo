@@ -14,7 +14,7 @@
 		inset: 0;
 		padding: 0;
 		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 102;
+		z-index: var(--fixed-z-index);
 	}
 
 	&--open {
@@ -98,10 +98,7 @@
 
 
 	&__header {
-		display: flex;
-		justify-content: space-between;
-		gap: var(--spacing-3);
-		align-items: center;
+		margin-right: var(--spacing-5);
 	}
 
 	&__body {

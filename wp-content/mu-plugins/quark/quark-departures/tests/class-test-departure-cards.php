@@ -640,7 +640,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'original_price'   => format_price( 45105 ),
 					'discounted_price' => format_price( 38369 ),
 				],
-				'promotions'   => [],
 				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD&mask=A',
 			],
 		];
@@ -658,7 +657,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'original_price'   => format_price( 75100 ),
 					'discounted_price' => format_price( 63865 ),
 				],
-				'promotions'   => [],
 				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=A',
 			],
 			[
@@ -669,7 +667,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'original_price'   => format_price( 34800 ),
 					'discounted_price' => format_price( 29610 ),
 				],
-				'promotions'   => [],
 				'checkout_url' => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD&mask=AA',
 			],
 		];
@@ -823,10 +820,10 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
 			'promotions'               => [
-				'Save 15% - Offer Code 15PROMO',
-				'One Year Priority Pass™ Membership - Offer Code PRIOPASS',
-				'Free Single Supplement on Standard Cabins - Offer Code SGLPROMO',
-				'$1000 USD Flight Credit - Offer Code FLIGHTUSD',
+				'15PROMO'   => 'Save 15% - Offer Code 15PROMO',
+				'PRIOPASS'  => 'One Year Priority Pass™ Membership - Offer Code PRIOPASS',
+				'SGLPROMO'  => 'Free Single Supplement on Standard Cabins - Offer Code SGLPROMO',
+				'FLIGHTUSD' => '$1000 USD Flight Credit - Offer Code FLIGHTUSD',
 			],
 		];
 
@@ -935,7 +932,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'permalink'   => '',
 			],
 			'promotions'               => [
-				'Save 25% - Offer Code 25PROMO',
+				'25PROMO' => 'Save 25% - Offer Code 25PROMO',
 			],
 		];
 
@@ -1040,7 +1037,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'permalink'   => get_permalink( self::$policy_pages[1] ),
 			],
 			'promotions'               => [
-				'Save 15% - Offer Code 15PROMO',
+				'15PROMO' => 'Save 15% - Offer Code 15PROMO',
 			],
 		];
 
@@ -1229,6 +1226,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'promos'                   => [
 						'15PROMO'   => '$38,369 USD',
 						'FLIGHTUSD' => '$38,369 USD',
+						'SGLPROMO'  => '$38,369 USD',
 					],
 					'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
 				],
@@ -1242,14 +1240,11 @@ class Test_Departure_Cards extends Softrip_TestCase {
 					'promos'                   => [
 						'15PROMO'   => '$29,610 USD',
 						'FLIGHTUSD' => '$29,610 USD',
+						'SGLPROMO'  => '$29,610 USD',
 					],
 					'type'                     => '',
 					'sort_priority'            => 0,
 				],
-			],
-			'free_promos'                => [
-				'PRIOPASS' => get_promotions_by_code( 'PRIOPASS' )[0],
-				'SGLPROMO' => get_promotions_by_code( 'SGLPROMO' )[0],
 			],
 		];
 
@@ -1277,6 +1272,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		// Get promotions data.
 		$expected_data['available_promos']['15PROMO']   = get_promotions_by_code( '15PROMO' )[0];
 		$expected_data['available_promos']['FLIGHTUSD'] = get_promotions_by_code( 'FLIGHTUSD' )[0];
+		$expected_data['available_promos']['SGLPROMO']  = get_promotions_by_code( 'SGLPROMO' )[0];
+		$expected_data['available_promos']['PRIOPASS']  = get_promotions_by_code( 'PRIOPASS' )[0];
 
 		// Assert data.
 		$this->assertEqualSetsWithIndex( $expected_data, $card_data );
@@ -1416,7 +1413,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'languages'                  => 'english',
 				'included_adventure_options' => [],
 				'paid_adventure_options'     => [],
-				'free_promos'                => [],
 				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_1 ),
 				'transfer_package_details'   => [
 					'title'                    => 'Includes',
@@ -1471,10 +1467,6 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'currency'         => DEFAULT_CURRENCY,
 					],
 				],
-				'free_promos'                => [
-					'PRIOPASS' => get_promotions_by_code( 'PRIOPASS' )[0],
-					'SGLPROMO' => get_promotions_by_code( 'SGLPROMO' )[0],
-				],
 				'request_a_quote_url'        => get_request_a_quote_url( $departure_post_2 ),
 				'transfer_package_details'   => [
 					'title'                    => 'Includes',
@@ -1499,6 +1491,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'promos'                   => [
 							'15PROMO'   => '$38,369 USD',
 							'FLIGHTUSD' => '$38,369 USD',
+							'SGLPROMO'  => '$38,369 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-SGL&currency=USD',
 						'type'                     => '',
@@ -1513,6 +1506,7 @@ class Test_Departure_Cards extends Softrip_TestCase {
 						'promos'                   => [
 							'15PROMO'   => '$29,610 USD',
 							'FLIGHTUSD' => '$29,610 USD',
+							'SGLPROMO'  => '$29,610 USD',
 						],
 						'checkout_url'             => 'https://local-checkout.quarkexpeditions.com?package_id=JKL-012&departure_date=2025-01-09&cabin_code=ULT-DBL&currency=USD',
 						'type'                     => '',
@@ -1522,6 +1516,8 @@ class Test_Departure_Cards extends Softrip_TestCase {
 				'available_promos'           => [
 					'15PROMO'   => get_promotions_by_code( '15PROMO' )[0],
 					'FLIGHTUSD' => get_promotions_by_code( 'FLIGHTUSD' )[0],
+					'SGLPROMO'  => get_promotions_by_code( 'SGLPROMO' )[0],
+					'PRIOPASS'  => get_promotions_by_code( 'PRIOPASS' )[0],
 				],
 			],
 		];
@@ -1868,9 +1864,9 @@ class Test_Departure_Cards extends Softrip_TestCase {
 		$actual = get_promotions_description( $departure_post_id );
 		$this->assertEquals(
 			[
-				'Save 15% - Offer Code 15PROMO',
-				'Save 25% - Offer Code 25PROMO',
-				'Pay in Full and Save 30% - Offer Code 30PIF',
+				'15PROMO' => 'Save 15% - Offer Code 15PROMO',
+				'25PROMO' => 'Save 25% - Offer Code 25PROMO',
+				'30PIF'   => 'Pay in Full and Save 30% - Offer Code 30PIF',
 			],
 			$actual
 		);
