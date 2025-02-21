@@ -79,10 +79,6 @@
 					</x-form.row>
 
 					<x-form.row>
-						<x-country-selector :countries="$countries" :states="$states" :enable_name_fields="true"/>
-					</x-form.row>
-
-					<x-form.row>
 						<x-form.field class="form-request-quote__toggle">
 							<tp-toggle-attribute trigger="select" target=".form-request-quote__travel-time">
 								<x-form.label id="expeditions">
@@ -125,6 +121,10 @@
 						<x-form.field :validation="[ 'required', 'no-empty-spaces' ]">
 							<x-form.input type="text" maxlength="80" label="{{ __( 'Last Name', 'qrk' ) }}" placeholder="{{ __( 'Enter Last Name', 'qrk' ) }}" name="fields[LastName__c]" />
 						</x-form.field>
+					</x-form.row>
+
+					<x-form.row>
+						<x-country-selector :countries="$countries" :states="$states" :enable_name_fields="true"/>
 					</x-form.row>
 
 					<x-form.row>
